@@ -1,0 +1,9 @@
+int main()
+{
+    void alo;
+    alo = 1 + 1;
+	printf("hello world");
+    
+    return ;
+    
+}
