@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------------
+                               Tabela de Simbolos                              
+---------------------------------------------------------------------------------
+		Token		|		Tipo		|		Linha		|		Coluna		
+	         int	|	        tipo	|	           0	|	           0	
+	        main	|	identificador	|	           0	|	           4	
+	           (	|	  parenteses	|	           0	|	           8	
+	           )	|	  parenteses	|	           0	|	           9	
+	           {	|	      chaves	|	           1	|	           0	
+	        void	|	        tipo	|	           2	|	           4	
+	         alo	|	identificador	|	           2	|	           9	
+	           ;	|	ponto-virgula	|	           2	|	          12	
+	         alo	|	identificador	|	           3	|	           4	
+	           =	|	operador-atrib	|	           3	|	           8	
+	           1	|	  number-int	|	           3	|	          10	
+	           +	|	operador-soma	|	           3	|	          12	
+	           1	|	  number-int	|	           3	|	          14	
+	           ;	|	ponto-virgula	|	           3	|	          15	
+	      printf	|	    //printf	|	           4	|	           1	
+	           (	|	  parenteses	|	           4	|	           7	
+	"hello world"	|	      string	|	           4	|	           8	
+	           )	|	  parenteses	|	           4	|	          21	
+	           ;	|	ponto-virgula	|	           4	|	          22	
+	      return	|	     keyword	|	           6	|	           4	
+	           ;	|	ponto-virgula	|	           6	|	          11	
+	           }	|	      chaves	|	           8	|	           0	
+---------------------------------------------------------------------------------
