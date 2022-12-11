@@ -30,6 +30,7 @@ void onlyLabelForIf(int label);
 void onlyGoTo(int label);
 void putOpInStack(char op);
 void loadVariableValue(int localizacao);
+void ifStackInverse(char *op);
 
 void atributeVariable(char *id);
 int findLocalizacao(char *string);

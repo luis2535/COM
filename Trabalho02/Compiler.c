@@ -143,3 +143,12 @@ void setLocalizacao(char *string, int local){
 	}
 	return;
 }
+void ifStackInverse(char *op){
+	f = fopen("output.j", "a");
+	if(strcmp(op, "!=") == 0) fprintf(f, "ifeq");
+	else if(strcmp(op, "<=") == 0) fprintf(f, "ifgt");
+	else if(strcmp(op, "<") == 0) fprintf(f, "ifge");
+	else if(strcmp(op, ">=") == 0) fprintf(f, "iflt");
+	else if(strcmp(op, ">") == 0) fprintf(f, "ifle");
+	else fprintf(f, "ifne");
+}
