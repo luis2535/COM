@@ -14,6 +14,8 @@ void yyerror(const char* s);
 %union {
 	int ival;
 	float fval;
+	char cval;
+	char *sval;
 }
 
 /* Declaração dos tokens... */
@@ -35,8 +37,11 @@ void yyerror(const char* s);
 %token SEMICOLON_TOKEN
 %token SYMBOLS_TOKEN
 
-%type<fval>
-%type<ival>
+%type<fval> FLOAT_TOKEN
+%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN IF_TOKEN ELSE_TOKEN WHILE_TOKEN
+%type<cval> soma mult ADD_TOKEN SUB_TOKEN MULT_TOKEN DIV_TOKEN
+%type<sval> var ID_TOKEN tipo-especificador INTEGER_TYPE_TOKEN VOID_TYPE_TOKEN BOOL_TYPE_TOKEN STRING_TYPE_TOKEN termo fator
+%type<sval> relacional SMALLER_EQUAL_TOKEN SMALLER_TOKEN BIGGER_EQUAL_TOKEN BIGGER_TOKEN EQUAL_TOKEN COMPARE_TOKEN DIFF_TOKEN
 
 %start programa
 
@@ -54,7 +59,7 @@ declaracao:		var-declaracao
 	;
 
 var-declaracao:		tipo-especificador ID_TOKEN SEMICOLON_TOKEN
-//	|		tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+	|		tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
 	;
 
 tipo-especificador:	INTEGER_TYPE_TOKEN {$$ = strdup($1);}
@@ -114,7 +119,7 @@ expressao:		var EQUAL_TOKEN expressao {atributeVariable($1);}
 	;
 
 var:			ID_TOKEN { $$ = strdup($1);}
-//	|		ID_TOKEN OPEN_BRACKET_TOKEN expressao CLOSE_BRACKET_TOKEN
+	|		ID_TOKEN OPEN_BRACKET_TOKEN expressao CLOSE_BRACKET_TOKEN
 	;
 
 simples-expressao:	soma-expressao relacional soma-expressao { putOpInStack('-'); ifStackInverse($2);}
