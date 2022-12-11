@@ -1,0 +1,1264 @@
+Terminais sem uso na gramática
+
+    FLOAT_TOKEN
+    FLOAT_TYPE_TOKEN
+    BOOL_TYPE_TOKEN
+    STRING_TYPE_TOKEN
+    TRUE_TOKEN
+    FALSE_TOKEN
+    CHAR_TOKEN
+    SYMBOLS_TOKEN
+
+
+Estado 97 conflitos: 1 de deslocamento/redução
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: declaracao-lista
+
+    2 declaracao-lista: declaracao-lista declaracao
+    3                 | declaracao
+
+    4 declaracao: var-declaracao
+    5           | fun-declaracao
+
+    6 var-declaracao: tipo-especificador ID_TOKEN SEMICOLON_TOKEN
+    7               | tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+
+    8 tipo-especificador: INTEGER_TYPE_TOKEN
+    9                   | VOID_TYPE_TOKEN
+
+   10 fun-declaracao: tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN composto-decl
+
+   11 params: param-lista
+   12       | vazio
+
+   13 param-lista: param-lista COMMA_TOKEN param
+   14            | param
+
+   15 param: tipo-especificador ID_TOKEN
+   16      | tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN CLOSE_BRACKET_TOKEN
+
+   17 composto-decl: OPEN_KEYS_TOKEN local-declaracoes statement-lista CLOSE_KEYS_TOKEN
+
+   18 local-declaracoes: local-declaracoes var-declaracao
+   19                  | ε
+
+   20 statement-lista: statement-lista statement
+   21                | ε
+
+   22 statement: expressao-decl
+   23          | composto-decl
+   24          | selecao-decl
+   25          | iteracao-decl
+   26          | retorno-decl
+
+   27 expressao-decl: expressao SEMICOLON_TOKEN
+   28               | SEMICOLON_TOKEN
+
+   29 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement
+   30             | IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN statement
+
+   31 iteracao-decl: WHILE_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement
+
+   32 retorno-decl: RETURN_TOKEN SEMICOLON_TOKEN
+   33             | RETURN_TOKEN expressao SEMICOLON_TOKEN
+
+   34 expressao: var EQUAL_TOKEN expressao
+   35          | simples-expressao
+
+   36 var: ID_TOKEN
+   37    | ID_TOKEN OPEN_BRACKET_TOKEN expressao CLOSE_BRACKET_TOKEN
+
+   38 simples-expressao: soma-expressao relacional soma-expressao
+   39                  | soma-expressao
+
+   40 relacional: SMALLER_EQUAL_TOKEN
+   41           | SMALLER_TOKEN
+   42           | BIGGER_TOKEN
+   43           | BIGGER_EQUAL_TOKEN
+   44           | COMPARE_TOKEN
+   45           | DIFF_TOKEN
+
+   46 soma-expressao: soma-expressao soma termo
+   47               | termo
+
+   48 soma: ADD_TOKEN
+   49     | SUB_TOKEN
+
+   50 termo: termo mult fator
+   51      | fator
+
+   52 mult: MULT_TOKEN
+   53     | DIV_TOKEN
+
+   54 fator: OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN
+   55      | var
+   56      | ativacao
+   57      | INT_TOKEN
+
+   58 ativacao: ID_TOKEN OPEN_PARENTHESES_TOKEN args CLOSE_PARENTHESES_TOKEN
+
+   59 args: arg-lista
+   60     | ε
+
+   61 arg-lista: arg-lista COMMA_TOKEN expressao
+   62          | expressao
+
+   63 vazio: ε
+
+
+Terminais, com as regras onde eles aparecem
+
+    $end (0) 0
+    error (256)
+    INT_TOKEN (258) 7 57
+    FLOAT_TOKEN (259)
+    INTEGER_TYPE_TOKEN (260) 8
+    FLOAT_TYPE_TOKEN (261)
+    VOID_TYPE_TOKEN (262) 9
+    BOOL_TYPE_TOKEN (263)
+    STRING_TYPE_TOKEN (264)
+    TRUE_TOKEN (265)
+    FALSE_TOKEN (266)
+    IF_TOKEN (267) 29 30
+    ELSE_TOKEN (268) 30
+    WHILE_TOKEN (269) 31
+    RETURN_TOKEN (270) 32 33
+    ADD_TOKEN (271) 48
+    SUB_TOKEN (272) 49
+    MULT_TOKEN (273) 52
+    DIV_TOKEN (274) 53
+    BIGGER_TOKEN (275) 42
+    SMALLER_EQUAL_TOKEN (276) 40
+    BIGGER_EQUAL_TOKEN (277) 43
+    SMALLER_TOKEN (278) 41
+    COMPARE_TOKEN (279) 44
+    DIFF_TOKEN (280) 45
+    EQUAL_TOKEN (281) 34
+    CHAR_TOKEN (282)
+    ID_TOKEN (283) 6 7 10 15 16 36 37 58
+    OPEN_BRACKET_TOKEN (284) 7 16 37
+    CLOSE_BRACKET_TOKEN (285) 7 16 37
+    OPEN_PARENTHESES_TOKEN (286) 10 29 30 31 54 58
+    CLOSE_PARENTHESES_TOKEN (287) 10 29 30 31 54 58
+    OPEN_KEYS_TOKEN (288) 17
+    CLOSE_KEYS_TOKEN (289) 17
+    COMMA_TOKEN (290) 13 61
+    SEMICOLON_TOKEN (291) 6 7 27 28 32 33
+    SYMBOLS_TOKEN (292)
+
+
+Não terminais com as regras onde eles aparecem
+
+    $accept (38)
+        à esquerda: 0
+    programa (39)
+        à esquerda: 1
+        à direita: 0
+    declaracao-lista (40)
+        à esquerda: 2 3
+        à direita: 1 2
+    declaracao (41)
+        à esquerda: 4 5
+        à direita: 2 3
+    var-declaracao (42)
+        à esquerda: 6 7
+        à direita: 4 18
+    tipo-especificador (43)
+        à esquerda: 8 9
+        à direita: 6 7 10 15 16
+    fun-declaracao (44)
+        à esquerda: 10
+        à direita: 5
+    params (45)
+        à esquerda: 11 12
+        à direita: 10
+    param-lista (46)
+        à esquerda: 13 14
+        à direita: 11 13
+    param (47)
+        à esquerda: 15 16
+        à direita: 13 14
+    composto-decl (48)
+        à esquerda: 17
+        à direita: 10 23
+    local-declaracoes (49)
+        à esquerda: 18 19
+        à direita: 17 18
+    statement-lista (50)
+        à esquerda: 20 21
+        à direita: 17 20
+    statement (51)
+        à esquerda: 22 23 24 25 26
+        à direita: 20 29 30 31
+    expressao-decl (52)
+        à esquerda: 27 28
+        à direita: 22
+    selecao-decl (53)
+        à esquerda: 29 30
+        à direita: 24
+    iteracao-decl (54)
+        à esquerda: 31
+        à direita: 25
+    retorno-decl (55)
+        à esquerda: 32 33
+        à direita: 26
+    expressao (56)
+        à esquerda: 34 35
+        à direita: 27 29 30 31 33 34 37 54 61 62
+    var (57)
+        à esquerda: 36 37
+        à direita: 34 55
+    simples-expressao (58)
+        à esquerda: 38 39
+        à direita: 35
+    relacional (59)
+        à esquerda: 40 41 42 43 44 45
+        à direita: 38
+    soma-expressao (60)
+        à esquerda: 46 47
+        à direita: 38 39 46
+    soma (61)
+        à esquerda: 48 49
+        à direita: 46
+    termo (62)
+        à esquerda: 50 51
+        à direita: 46 47 50
+    mult (63)
+        à esquerda: 52 53
+        à direita: 50
+    fator (64)
+        à esquerda: 54 55 56 57
+        à direita: 50 51
+    ativacao (65)
+        à esquerda: 58
+        à direita: 56
+    args (66)
+        à esquerda: 59 60
+        à direita: 58
+    arg-lista (67)
+        à esquerda: 61 62
+        à direita: 59 61
+    vazio (68)
+        à esquerda: 63
+        à direita: 12
+
+
+Estado 0
+
+    0 $accept: • programa $end
+
+    INTEGER_TYPE_TOKEN  deslocar, e ir ao estado 1
+    VOID_TYPE_TOKEN     deslocar, e ir ao estado 2
+
+    programa            ir ao estado 3
+    declaracao-lista    ir ao estado 4
+    declaracao          ir ao estado 5
+    var-declaracao      ir ao estado 6
+    tipo-especificador  ir ao estado 7
+    fun-declaracao      ir ao estado 8
+
+
+Estado 1
+
+    8 tipo-especificador: INTEGER_TYPE_TOKEN •
+
+    $padrão  reduzir usando a regra 8 (tipo-especificador)
+
+
+Estado 2
+
+    9 tipo-especificador: VOID_TYPE_TOKEN •
+
+    $padrão  reduzir usando a regra 9 (tipo-especificador)
+
+
+Estado 3
+
+    0 $accept: programa • $end
+
+    $end  deslocar, e ir ao estado 9
+
+
+Estado 4
+
+    1 programa: declaracao-lista •
+    2 declaracao-lista: declaracao-lista • declaracao
+
+    INTEGER_TYPE_TOKEN  deslocar, e ir ao estado 1
+    VOID_TYPE_TOKEN     deslocar, e ir ao estado 2
+
+    $padrão  reduzir usando a regra 1 (programa)
+
+    declaracao          ir ao estado 10
+    var-declaracao      ir ao estado 6
+    tipo-especificador  ir ao estado 7
+    fun-declaracao      ir ao estado 8
+
+
+Estado 5
+
+    3 declaracao-lista: declaracao •
+
+    $padrão  reduzir usando a regra 3 (declaracao-lista)
+
+
+Estado 6
+
+    4 declaracao: var-declaracao •
+
+    $padrão  reduzir usando a regra 4 (declaracao)
+
+
+Estado 7
+
+    6 var-declaracao: tipo-especificador • ID_TOKEN SEMICOLON_TOKEN
+    7               | tipo-especificador • ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+   10 fun-declaracao: tipo-especificador • ID_TOKEN OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN composto-decl
+
+    ID_TOKEN  deslocar, e ir ao estado 11
+
+
+Estado 8
+
+    5 declaracao: fun-declaracao •
+
+    $padrão  reduzir usando a regra 5 (declaracao)
+
+
+Estado 9
+
+    0 $accept: programa $end •
+
+    $padrão  aceitar
+
+
+Estado 10
+
+    2 declaracao-lista: declaracao-lista declaracao •
+
+    $padrão  reduzir usando a regra 2 (declaracao-lista)
+
+
+Estado 11
+
+    6 var-declaracao: tipo-especificador ID_TOKEN • SEMICOLON_TOKEN
+    7               | tipo-especificador ID_TOKEN • OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+   10 fun-declaracao: tipo-especificador ID_TOKEN • OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN composto-decl
+
+    OPEN_BRACKET_TOKEN      deslocar, e ir ao estado 12
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 13
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 14
+
+
+Estado 12
+
+    7 var-declaracao: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN • INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+
+    INT_TOKEN  deslocar, e ir ao estado 15
+
+
+Estado 13
+
+   10 fun-declaracao: tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN • params CLOSE_PARENTHESES_TOKEN composto-decl
+
+    INTEGER_TYPE_TOKEN  deslocar, e ir ao estado 1
+    VOID_TYPE_TOKEN     deslocar, e ir ao estado 2
+
+    $padrão  reduzir usando a regra 63 (vazio)
+
+    tipo-especificador  ir ao estado 16
+    params              ir ao estado 17
+    param-lista         ir ao estado 18
+    param               ir ao estado 19
+    vazio               ir ao estado 20
+
+
+Estado 14
+
+    6 var-declaracao: tipo-especificador ID_TOKEN SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 6 (var-declaracao)
+
+
+Estado 15
+
+    7 var-declaracao: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN • CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+
+    CLOSE_BRACKET_TOKEN  deslocar, e ir ao estado 21
+
+
+Estado 16
+
+   15 param: tipo-especificador • ID_TOKEN
+   16      | tipo-especificador • ID_TOKEN OPEN_BRACKET_TOKEN CLOSE_BRACKET_TOKEN
+
+    ID_TOKEN  deslocar, e ir ao estado 22
+
+
+Estado 17
+
+   10 fun-declaracao: tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN params • CLOSE_PARENTHESES_TOKEN composto-decl
+
+    CLOSE_PARENTHESES_TOKEN  deslocar, e ir ao estado 23
+
+
+Estado 18
+
+   11 params: param-lista •
+   13 param-lista: param-lista • COMMA_TOKEN param
+
+    COMMA_TOKEN  deslocar, e ir ao estado 24
+
+    $padrão  reduzir usando a regra 11 (params)
+
+
+Estado 19
+
+   14 param-lista: param •
+
+    $padrão  reduzir usando a regra 14 (param-lista)
+
+
+Estado 20
+
+   12 params: vazio •
+
+    $padrão  reduzir usando a regra 12 (params)
+
+
+Estado 21
+
+    7 var-declaracao: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN • SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  deslocar, e ir ao estado 25
+
+
+Estado 22
+
+   15 param: tipo-especificador ID_TOKEN •
+   16      | tipo-especificador ID_TOKEN • OPEN_BRACKET_TOKEN CLOSE_BRACKET_TOKEN
+
+    OPEN_BRACKET_TOKEN  deslocar, e ir ao estado 26
+
+    $padrão  reduzir usando a regra 15 (param)
+
+
+Estado 23
+
+   10 fun-declaracao: tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN • composto-decl
+
+    OPEN_KEYS_TOKEN  deslocar, e ir ao estado 27
+
+    composto-decl  ir ao estado 28
+
+
+Estado 24
+
+   13 param-lista: param-lista COMMA_TOKEN • param
+
+    INTEGER_TYPE_TOKEN  deslocar, e ir ao estado 1
+    VOID_TYPE_TOKEN     deslocar, e ir ao estado 2
+
+    tipo-especificador  ir ao estado 16
+    param               ir ao estado 29
+
+
+Estado 25
+
+    7 var-declaracao: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 7 (var-declaracao)
+
+
+Estado 26
+
+   16 param: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN • CLOSE_BRACKET_TOKEN
+
+    CLOSE_BRACKET_TOKEN  deslocar, e ir ao estado 30
+
+
+Estado 27
+
+   17 composto-decl: OPEN_KEYS_TOKEN • local-declaracoes statement-lista CLOSE_KEYS_TOKEN
+
+    $padrão  reduzir usando a regra 19 (local-declaracoes)
+
+    local-declaracoes  ir ao estado 31
+
+
+Estado 28
+
+   10 fun-declaracao: tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN composto-decl •
+
+    $padrão  reduzir usando a regra 10 (fun-declaracao)
+
+
+Estado 29
+
+   13 param-lista: param-lista COMMA_TOKEN param •
+
+    $padrão  reduzir usando a regra 13 (param-lista)
+
+
+Estado 30
+
+   16 param: tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN CLOSE_BRACKET_TOKEN •
+
+    $padrão  reduzir usando a regra 16 (param)
+
+
+Estado 31
+
+   17 composto-decl: OPEN_KEYS_TOKEN local-declaracoes • statement-lista CLOSE_KEYS_TOKEN
+   18 local-declaracoes: local-declaracoes • var-declaracao
+
+    INTEGER_TYPE_TOKEN  deslocar, e ir ao estado 1
+    VOID_TYPE_TOKEN     deslocar, e ir ao estado 2
+
+    $padrão  reduzir usando a regra 21 (statement-lista)
+
+    var-declaracao      ir ao estado 32
+    tipo-especificador  ir ao estado 33
+    statement-lista     ir ao estado 34
+
+
+Estado 32
+
+   18 local-declaracoes: local-declaracoes var-declaracao •
+
+    $padrão  reduzir usando a regra 18 (local-declaracoes)
+
+
+Estado 33
+
+    6 var-declaracao: tipo-especificador • ID_TOKEN SEMICOLON_TOKEN
+    7               | tipo-especificador • ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+
+    ID_TOKEN  deslocar, e ir ao estado 35
+
+
+Estado 34
+
+   17 composto-decl: OPEN_KEYS_TOKEN local-declaracoes statement-lista • CLOSE_KEYS_TOKEN
+   20 statement-lista: statement-lista • statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    IF_TOKEN                deslocar, e ir ao estado 37
+    WHILE_TOKEN             deslocar, e ir ao estado 38
+    RETURN_TOKEN            deslocar, e ir ao estado 39
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+    OPEN_KEYS_TOKEN         deslocar, e ir ao estado 27
+    CLOSE_KEYS_TOKEN        deslocar, e ir ao estado 42
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 43
+
+    composto-decl      ir ao estado 44
+    statement          ir ao estado 45
+    expressao-decl     ir ao estado 46
+    selecao-decl       ir ao estado 47
+    iteracao-decl      ir ao estado 48
+    retorno-decl       ir ao estado 49
+    expressao          ir ao estado 50
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 35
+
+    6 var-declaracao: tipo-especificador ID_TOKEN • SEMICOLON_TOKEN
+    7               | tipo-especificador ID_TOKEN • OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
+
+    OPEN_BRACKET_TOKEN  deslocar, e ir ao estado 12
+    SEMICOLON_TOKEN     deslocar, e ir ao estado 14
+
+
+Estado 36
+
+   57 fator: INT_TOKEN •
+
+    $padrão  reduzir usando a regra 57 (fator)
+
+
+Estado 37
+
+   29 selecao-decl: IF_TOKEN • OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement
+   30             | IF_TOKEN • OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN statement
+
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 57
+
+
+Estado 38
+
+   31 iteracao-decl: WHILE_TOKEN • OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement
+
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 58
+
+
+Estado 39
+
+   32 retorno-decl: RETURN_TOKEN • SEMICOLON_TOKEN
+   33             | RETURN_TOKEN • expressao SEMICOLON_TOKEN
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 59
+
+    expressao          ir ao estado 60
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 40
+
+   36 var: ID_TOKEN •
+   37    | ID_TOKEN • OPEN_BRACKET_TOKEN expressao CLOSE_BRACKET_TOKEN
+   58 ativacao: ID_TOKEN • OPEN_PARENTHESES_TOKEN args CLOSE_PARENTHESES_TOKEN
+
+    OPEN_BRACKET_TOKEN      deslocar, e ir ao estado 61
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 62
+
+    $padrão  reduzir usando a regra 36 (var)
+
+
+Estado 41
+
+   54 fator: OPEN_PARENTHESES_TOKEN • expressao CLOSE_PARENTHESES_TOKEN
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 63
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 42
+
+   17 composto-decl: OPEN_KEYS_TOKEN local-declaracoes statement-lista CLOSE_KEYS_TOKEN •
+
+    $padrão  reduzir usando a regra 17 (composto-decl)
+
+
+Estado 43
+
+   28 expressao-decl: SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 28 (expressao-decl)
+
+
+Estado 44
+
+   23 statement: composto-decl •
+
+    $padrão  reduzir usando a regra 23 (statement)
+
+
+Estado 45
+
+   20 statement-lista: statement-lista statement •
+
+    $padrão  reduzir usando a regra 20 (statement-lista)
+
+
+Estado 46
+
+   22 statement: expressao-decl •
+
+    $padrão  reduzir usando a regra 22 (statement)
+
+
+Estado 47
+
+   24 statement: selecao-decl •
+
+    $padrão  reduzir usando a regra 24 (statement)
+
+
+Estado 48
+
+   25 statement: iteracao-decl •
+
+    $padrão  reduzir usando a regra 25 (statement)
+
+
+Estado 49
+
+   26 statement: retorno-decl •
+
+    $padrão  reduzir usando a regra 26 (statement)
+
+
+Estado 50
+
+   27 expressao-decl: expressao • SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  deslocar, e ir ao estado 64
+
+
+Estado 51
+
+   34 expressao: var • EQUAL_TOKEN expressao
+   55 fator: var •
+
+    EQUAL_TOKEN  deslocar, e ir ao estado 65
+
+    $padrão  reduzir usando a regra 55 (fator)
+
+
+Estado 52
+
+   35 expressao: simples-expressao •
+
+    $padrão  reduzir usando a regra 35 (expressao)
+
+
+Estado 53
+
+   38 simples-expressao: soma-expressao • relacional soma-expressao
+   39                  | soma-expressao •
+   46 soma-expressao: soma-expressao • soma termo
+
+    ADD_TOKEN            deslocar, e ir ao estado 66
+    SUB_TOKEN            deslocar, e ir ao estado 67
+    BIGGER_TOKEN         deslocar, e ir ao estado 68
+    SMALLER_EQUAL_TOKEN  deslocar, e ir ao estado 69
+    BIGGER_EQUAL_TOKEN   deslocar, e ir ao estado 70
+    SMALLER_TOKEN        deslocar, e ir ao estado 71
+    COMPARE_TOKEN        deslocar, e ir ao estado 72
+    DIFF_TOKEN           deslocar, e ir ao estado 73
+
+    $padrão  reduzir usando a regra 39 (simples-expressao)
+
+    relacional  ir ao estado 74
+    soma        ir ao estado 75
+
+
+Estado 54
+
+   47 soma-expressao: termo •
+   50 termo: termo • mult fator
+
+    MULT_TOKEN  deslocar, e ir ao estado 76
+    DIV_TOKEN   deslocar, e ir ao estado 77
+
+    $padrão  reduzir usando a regra 47 (soma-expressao)
+
+    mult  ir ao estado 78
+
+
+Estado 55
+
+   51 termo: fator •
+
+    $padrão  reduzir usando a regra 51 (termo)
+
+
+Estado 56
+
+   56 fator: ativacao •
+
+    $padrão  reduzir usando a regra 56 (fator)
+
+
+Estado 57
+
+   29 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN • expressao CLOSE_PARENTHESES_TOKEN statement
+   30             | IF_TOKEN OPEN_PARENTHESES_TOKEN • expressao CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 79
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 58
+
+   31 iteracao-decl: WHILE_TOKEN OPEN_PARENTHESES_TOKEN • expressao CLOSE_PARENTHESES_TOKEN statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 80
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 59
+
+   32 retorno-decl: RETURN_TOKEN SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 32 (retorno-decl)
+
+
+Estado 60
+
+   33 retorno-decl: RETURN_TOKEN expressao • SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  deslocar, e ir ao estado 81
+
+
+Estado 61
+
+   37 var: ID_TOKEN OPEN_BRACKET_TOKEN • expressao CLOSE_BRACKET_TOKEN
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 82
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 62
+
+   58 ativacao: ID_TOKEN OPEN_PARENTHESES_TOKEN • args CLOSE_PARENTHESES_TOKEN
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    $padrão  reduzir usando a regra 60 (args)
+
+    expressao          ir ao estado 83
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+    args               ir ao estado 84
+    arg-lista          ir ao estado 85
+
+
+Estado 63
+
+   54 fator: OPEN_PARENTHESES_TOKEN expressao • CLOSE_PARENTHESES_TOKEN
+
+    CLOSE_PARENTHESES_TOKEN  deslocar, e ir ao estado 86
+
+
+Estado 64
+
+   27 expressao-decl: expressao SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 27 (expressao-decl)
+
+
+Estado 65
+
+   34 expressao: var EQUAL_TOKEN • expressao
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 87
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 66
+
+   48 soma: ADD_TOKEN •
+
+    $padrão  reduzir usando a regra 48 (soma)
+
+
+Estado 67
+
+   49 soma: SUB_TOKEN •
+
+    $padrão  reduzir usando a regra 49 (soma)
+
+
+Estado 68
+
+   42 relacional: BIGGER_TOKEN •
+
+    $padrão  reduzir usando a regra 42 (relacional)
+
+
+Estado 69
+
+   40 relacional: SMALLER_EQUAL_TOKEN •
+
+    $padrão  reduzir usando a regra 40 (relacional)
+
+
+Estado 70
+
+   43 relacional: BIGGER_EQUAL_TOKEN •
+
+    $padrão  reduzir usando a regra 43 (relacional)
+
+
+Estado 71
+
+   41 relacional: SMALLER_TOKEN •
+
+    $padrão  reduzir usando a regra 41 (relacional)
+
+
+Estado 72
+
+   44 relacional: COMPARE_TOKEN •
+
+    $padrão  reduzir usando a regra 44 (relacional)
+
+
+Estado 73
+
+   45 relacional: DIFF_TOKEN •
+
+    $padrão  reduzir usando a regra 45 (relacional)
+
+
+Estado 74
+
+   38 simples-expressao: soma-expressao relacional • soma-expressao
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    var             ir ao estado 88
+    soma-expressao  ir ao estado 89
+    termo           ir ao estado 54
+    fator           ir ao estado 55
+    ativacao        ir ao estado 56
+
+
+Estado 75
+
+   46 soma-expressao: soma-expressao soma • termo
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    var       ir ao estado 88
+    termo     ir ao estado 90
+    fator     ir ao estado 55
+    ativacao  ir ao estado 56
+
+
+Estado 76
+
+   52 mult: MULT_TOKEN •
+
+    $padrão  reduzir usando a regra 52 (mult)
+
+
+Estado 77
+
+   53 mult: DIV_TOKEN •
+
+    $padrão  reduzir usando a regra 53 (mult)
+
+
+Estado 78
+
+   50 termo: termo mult • fator
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    var       ir ao estado 88
+    fator     ir ao estado 91
+    ativacao  ir ao estado 56
+
+
+Estado 79
+
+   29 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao • CLOSE_PARENTHESES_TOKEN statement
+   30             | IF_TOKEN OPEN_PARENTHESES_TOKEN expressao • CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN statement
+
+    CLOSE_PARENTHESES_TOKEN  deslocar, e ir ao estado 92
+
+
+Estado 80
+
+   31 iteracao-decl: WHILE_TOKEN OPEN_PARENTHESES_TOKEN expressao • CLOSE_PARENTHESES_TOKEN statement
+
+    CLOSE_PARENTHESES_TOKEN  deslocar, e ir ao estado 93
+
+
+Estado 81
+
+   33 retorno-decl: RETURN_TOKEN expressao SEMICOLON_TOKEN •
+
+    $padrão  reduzir usando a regra 33 (retorno-decl)
+
+
+Estado 82
+
+   37 var: ID_TOKEN OPEN_BRACKET_TOKEN expressao • CLOSE_BRACKET_TOKEN
+
+    CLOSE_BRACKET_TOKEN  deslocar, e ir ao estado 94
+
+
+Estado 83
+
+   62 arg-lista: expressao •
+
+    $padrão  reduzir usando a regra 62 (arg-lista)
+
+
+Estado 84
+
+   58 ativacao: ID_TOKEN OPEN_PARENTHESES_TOKEN args • CLOSE_PARENTHESES_TOKEN
+
+    CLOSE_PARENTHESES_TOKEN  deslocar, e ir ao estado 95
+
+
+Estado 85
+
+   59 args: arg-lista •
+   61 arg-lista: arg-lista • COMMA_TOKEN expressao
+
+    COMMA_TOKEN  deslocar, e ir ao estado 96
+
+    $padrão  reduzir usando a regra 59 (args)
+
+
+Estado 86
+
+   54 fator: OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN •
+
+    $padrão  reduzir usando a regra 54 (fator)
+
+
+Estado 87
+
+   34 expressao: var EQUAL_TOKEN expressao •
+
+    $padrão  reduzir usando a regra 34 (expressao)
+
+
+Estado 88
+
+   55 fator: var •
+
+    $padrão  reduzir usando a regra 55 (fator)
+
+
+Estado 89
+
+   38 simples-expressao: soma-expressao relacional soma-expressao •
+   46 soma-expressao: soma-expressao • soma termo
+
+    ADD_TOKEN  deslocar, e ir ao estado 66
+    SUB_TOKEN  deslocar, e ir ao estado 67
+
+    $padrão  reduzir usando a regra 38 (simples-expressao)
+
+    soma  ir ao estado 75
+
+
+Estado 90
+
+   46 soma-expressao: soma-expressao soma termo •
+   50 termo: termo • mult fator
+
+    MULT_TOKEN  deslocar, e ir ao estado 76
+    DIV_TOKEN   deslocar, e ir ao estado 77
+
+    $padrão  reduzir usando a regra 46 (soma-expressao)
+
+    mult  ir ao estado 78
+
+
+Estado 91
+
+   50 termo: termo mult fator •
+
+    $padrão  reduzir usando a regra 50 (termo)
+
+
+Estado 92
+
+   29 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN • statement
+   30             | IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN • statement ELSE_TOKEN statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    IF_TOKEN                deslocar, e ir ao estado 37
+    WHILE_TOKEN             deslocar, e ir ao estado 38
+    RETURN_TOKEN            deslocar, e ir ao estado 39
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+    OPEN_KEYS_TOKEN         deslocar, e ir ao estado 27
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 43
+
+    composto-decl      ir ao estado 44
+    statement          ir ao estado 97
+    expressao-decl     ir ao estado 46
+    selecao-decl       ir ao estado 47
+    iteracao-decl      ir ao estado 48
+    retorno-decl       ir ao estado 49
+    expressao          ir ao estado 50
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 93
+
+   31 iteracao-decl: WHILE_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN • statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    IF_TOKEN                deslocar, e ir ao estado 37
+    WHILE_TOKEN             deslocar, e ir ao estado 38
+    RETURN_TOKEN            deslocar, e ir ao estado 39
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+    OPEN_KEYS_TOKEN         deslocar, e ir ao estado 27
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 43
+
+    composto-decl      ir ao estado 44
+    statement          ir ao estado 98
+    expressao-decl     ir ao estado 46
+    selecao-decl       ir ao estado 47
+    iteracao-decl      ir ao estado 48
+    retorno-decl       ir ao estado 49
+    expressao          ir ao estado 50
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 94
+
+   37 var: ID_TOKEN OPEN_BRACKET_TOKEN expressao CLOSE_BRACKET_TOKEN •
+
+    $padrão  reduzir usando a regra 37 (var)
+
+
+Estado 95
+
+   58 ativacao: ID_TOKEN OPEN_PARENTHESES_TOKEN args CLOSE_PARENTHESES_TOKEN •
+
+    $padrão  reduzir usando a regra 58 (ativacao)
+
+
+Estado 96
+
+   61 arg-lista: arg-lista COMMA_TOKEN • expressao
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+
+    expressao          ir ao estado 99
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 97
+
+   29 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement •
+   30             | IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement • ELSE_TOKEN statement
+
+    ELSE_TOKEN  deslocar, e ir ao estado 100
+
+    ELSE_TOKEN  [reduzir usando a regra 29 (selecao-decl)]
+    $padrão     reduzir usando a regra 29 (selecao-decl)
+
+
+Estado 98
+
+   31 iteracao-decl: WHILE_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement •
+
+    $padrão  reduzir usando a regra 31 (iteracao-decl)
+
+
+Estado 99
+
+   61 arg-lista: arg-lista COMMA_TOKEN expressao •
+
+    $padrão  reduzir usando a regra 61 (arg-lista)
+
+
+Estado 100
+
+   30 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN • statement
+
+    INT_TOKEN               deslocar, e ir ao estado 36
+    IF_TOKEN                deslocar, e ir ao estado 37
+    WHILE_TOKEN             deslocar, e ir ao estado 38
+    RETURN_TOKEN            deslocar, e ir ao estado 39
+    ID_TOKEN                deslocar, e ir ao estado 40
+    OPEN_PARENTHESES_TOKEN  deslocar, e ir ao estado 41
+    OPEN_KEYS_TOKEN         deslocar, e ir ao estado 27
+    SEMICOLON_TOKEN         deslocar, e ir ao estado 43
+
+    composto-decl      ir ao estado 44
+    statement          ir ao estado 101
+    expressao-decl     ir ao estado 46
+    selecao-decl       ir ao estado 47
+    iteracao-decl      ir ao estado 48
+    retorno-decl       ir ao estado 49
+    expressao          ir ao estado 50
+    var                ir ao estado 51
+    simples-expressao  ir ao estado 52
+    soma-expressao     ir ao estado 53
+    termo              ir ao estado 54
+    fator              ir ao estado 55
+    ativacao           ir ao estado 56
+
+
+Estado 101
+
+   30 selecao-decl: IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN statement ELSE_TOKEN statement •
+
+    $padrão  reduzir usando a regra 30 (selecao-decl)
