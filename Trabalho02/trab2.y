@@ -1,11 +1,11 @@
 %{
 
+#include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+#include "Compiler.h"
 
-extern int yylex();
-extern int yyparse();
-extern FILE* yyin;
 extern int count_label;
 
 void yyerror(const char* s);
@@ -36,11 +36,12 @@ void yyerror(const char* s);
 %token COMMA_TOKEN
 %token SEMICOLON_TOKEN
 %token SYMBOLS_TOKEN
+%token PRINT_TOKEN
 
 %type<fval> FLOAT_TOKEN
 %type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN IF_TOKEN ELSE_TOKEN WHILE_TOKEN
 %type<cval> soma mult ADD_TOKEN SUB_TOKEN MULT_TOKEN DIV_TOKEN
-%type<sval> var ID_TOKEN tipo-especificador INTEGER_TYPE_TOKEN VOID_TYPE_TOKEN BOOL_TYPE_TOKEN STRING_TYPE_TOKEN termo fator
+%type<sval> var ID_TOKEN tipo-especificador INTEGER_TYPE_TOKEN VOID_TYPE_TOKEN BOOL_TYPE_TOKEN STRING_TYPE_TOKEN 
 %type<sval> relacional SMALLER_EQUAL_TOKEN SMALLER_TOKEN BIGGER_EQUAL_TOKEN BIGGER_TOKEN EQUAL_TOKEN COMPARE_TOKEN DIFF_TOKEN
 
 %start programa
@@ -97,17 +98,18 @@ statement:		expressao-decl
 	|		selecao-decl
 	|		iteracao-decl
 	|		retorno-decl
+	|		printar
 	;
 
 expressao-decl:		expressao SEMICOLON_TOKEN
 	|		SEMICOLON_TOKEN
 	;
 
-selecao-decl:		IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {$1 = count_label; onlyLabelForIf($1); count_label+=2} statement {onlyGoTo($1 + 1); onlyLabel($1);}
-	|		IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {$1 = count_label; onlyLabelForIf($1); count_label+=2} statement {onlyGoTo($1 + 1); onlyLabel($1);} ELSE_TOKEN statement {onlyLabel($1 + 1);}
+selecao-decl:		IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {$1 = count_label; onlyLabelForIf($1); count_label+=2;} statement {onlyGoTo($1 + 1); onlyLabel($1);}
+	|		IF_TOKEN OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {$1 = count_label; onlyLabelForIf($1); count_label+=2;} statement {onlyGoTo($1 + 1); onlyLabel($1);} ELSE_TOKEN statement {onlyLabel($1 + 1);}
 	;
 
-iteracao-decl:		WHILE_TOKEN {$1 = count_label; onlyLabel($1); count_label+=2;} OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {onlyLabelForIf($1 + 1);} statement {onlyGoTo($1); onlyLabel($1 + 1)}
+iteracao-decl:		WHILE_TOKEN {$1 = count_label; onlyLabel($1); count_label+=2;} OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN {onlyLabelForIf($1 + 1);} statement {onlyGoTo($1); onlyLabel($1 + 1);}
 	;
 
 retorno-decl:		RETURN_TOKEN SEMICOLON_TOKEN
@@ -151,7 +153,7 @@ mult:			MULT_TOKEN {$$ = strdup($1);}
 	;
 
 fator:			OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN
-	|		var {loadVariableValue(getLocation($1));}
+	|		var {loadVariableValue(findLocalizacao($1));}
 	|		ativacao
 	|		INT_TOKEN
 	;
@@ -168,6 +170,9 @@ arg-lista:		arg-lista COMMA_TOKEN expressao
 	;
 vazio:
 	;
+printar: PRINT_TOKEN OPEN_PARENTHESES_TOKEN {writeCode("getstatic java/lang/System/out Ljava/io/PrintStream;\n");} simples-expressao CLOSE_PARENTHESES_TOKEN {writeCode("invokevirtual java/io/PrintStream/println(I)V\n");} SEMICOLON_TOKEN
+	   ;
+
 
 %%
 

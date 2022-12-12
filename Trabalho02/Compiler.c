@@ -3,9 +3,9 @@
 int num_lin = 0;
 int num_col = 0;
 int cont_tokens = 0;
-int cont_labels = 0;
+int count_label = 0;
 int localizacoesUsadas = 0;
-Token *tabela;
+Token *tabela = NULL;
 FILE *f;
 
 void TabelaToken(){
@@ -28,9 +28,36 @@ Token *aux;
 
 }
 
-void inserirToken(Token **tabela, char* conteudo, char* tipo, int linha, int coluna){
+void addTabela(char* conteudo, char* tipo, int linha, int coluna){
+	if(tabela == NULL)
+		tabela = createTabela(conteudo,tipo,linha,coluna);
+	else{
+		Token *aux = tabela;
+		while(aux->proximo != NULL){
+			aux = aux->proximo;
+		}
+		Token *novoToken;
+		novoToken = createToken(conteudo, tipo, linha, coluna);
+		novoToken->localizacao = findLocalizacao(conteudo);
+		aux->proximo = novoToken;
+		novoToken->anterior = aux;
+	}
+	num_col += strlen(conteudo);
+}
+Token *createTabela(char* conteudo, char* tipo, int linha, int coluna){
 	cont_tokens++;
-	Token *aux = (Token*)malloc(sizeof(Token));
+	Token *novaTabela;
+	novaTabela = (Token *) malloc(sizeof(Token));
+	strcpy(novaTabela->conteudo,conteudo);
+	strcpy(novaTabela->tipo,tipo);
+	novaTabela->linha = linha;
+	novaTabela->coluna = coluna;
+	novaTabela->proximo = NULL;
+	novaTabela->anterior = NULL;
+	novaTabela->localizacao = -1;
+}
+Token *createToken(char* conteudo, char* tipo, int linha, int coluna){
+	cont_tokens++;
 	Token *novoToken = (Token*)malloc(sizeof(Token));
 
 	strcpy(novoToken->conteudo,conteudo);
@@ -39,23 +66,36 @@ void inserirToken(Token **tabela, char* conteudo, char* tipo, int linha, int col
 	novoToken->coluna = coluna;
 	novoToken->proximo = NULL;
 	novoToken->localizacao = -1;
-	novoToken->localizacao = findLocalizacao(conteudo);
 
-	if(*tabela == NULL){
-		*tabela = novoToken;
-		novoToken->anterior = NULL;
-	}
-	else{
-		aux = *tabela;
-		while(aux->proximo){
-			aux = aux->proximo;
-		}
-		aux->proximo = novoToken;
-		novoToken->anterior = aux;
-	}
-    num_col += strlen(conteudo);
-	
 }
+// void inserirToken(Token **tabela, char* conteudo, char* tipo, int linha, int coluna){
+// 	cont_tokens++;
+// 	Token *aux = (Token*)malloc(sizeof(Token));
+// 	Token *novoToken = (Token*)malloc(sizeof(Token));
+
+// 	strcpy(novoToken->conteudo,conteudo);
+// 	strcpy(novoToken->tipo,tipo);
+// 	novoToken->linha = linha;
+// 	novoToken->coluna = coluna;
+// 	novoToken->proximo = NULL;
+// 	novoToken->localizacao = -1;
+// 	novoToken->localizacao = findLocalizacao(conteudo);
+
+// 	if(*tabela == NULL){
+// 		*tabela = novoToken;
+// 		novoToken->anterior = NULL;
+// 	}
+// 	else{
+// 		aux = *tabela;
+// 		while(aux->proximo){
+// 			aux = aux->proximo;
+// 		}
+// 		aux->proximo = novoToken;
+// 		novoToken->anterior = aux;
+// 	}
+//     num_col += strlen(conteudo);
+	
+// }
 void generateHeader(){
 	f = fopen("output.j", "w+");
 	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");
@@ -151,4 +191,8 @@ void ifStackInverse(char *op){
 	else if(strcmp(op, ">=") == 0) fprintf(f, "iflt");
 	else if(strcmp(op, ">") == 0) fprintf(f, "ifle");
 	else fprintf(f, "ifne");
+}
+void writeCode(char *code){
+	f = fopen("output.j", "a");
+	fprintf(f, "%s", code);
 }

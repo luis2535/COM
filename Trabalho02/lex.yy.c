@@ -322,6 +322,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -559,15 +562,17 @@ char *yytext;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define yyterminate() return END;
+#include "Compiler.h"
+#include "trab2.tab.h"
+
 extern int num_col;
 extern int num_lin;
 
-#line 567 "lex.yy.c"
+#line 572 "lex.yy.c"
 /* ========================================================================== */
 /* ===========================  Sessão DEFINIÇÔES  ========================== */
 /* ========================================================================== */
-#line 571 "lex.yy.c"
+#line 576 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -784,10 +789,10 @@ YY_DECL
 		}
 
 	{
-#line 42 "trab2.lex"
+#line 44 "trab2.lex"
 
 
-#line 791 "lex.yy.c"
+#line 796 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -846,28 +851,31 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 44 "trab2.lex"
+#line 46 "trab2.lex"
 { 
 	//printf( "Um valor inteiro: %s (%d)\n", yytext, atoi( yytext ) );
-	inserirToken(&tabela, yytext, "number-int", num_lin, num_col);
+	addTabela(yytext, "number-int", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "number-int", num_lin, num_col);
     return INT_TOKEN;
 	}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "trab2.lex"
+#line 53 "trab2.lex"
 { 
 	//printf( "Um valor flutuante: %s (%f)\n", yytext, atof( yytext ) );
-	inserirToken(&tabela, yytext, "number-float", num_lin, num_col);
+	addTabela(yytext, "number-float", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "number-float", num_lin, num_col);
     return FLOAT_TOKEN;
 	}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 56 "trab2.lex"
+#line 60 "trab2.lex"
 {
 	//printf( "Um tipo especificador: %s\n", yytext);
-	inserirToken(&tabela, yytext, "tipo", num_lin, num_col);
+	addTabela(yytext, "tipo", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "tipo", num_lin, num_col);
     if(strcmp(yytext, "int") == 0) return INTEGER_TYPE_TOKEN;
     else if(strcmp(yytext, "void") == 0) return VOID_TYPE_TOKEN;
     else if(strcmp(yytext, "float") == 0) return FLOAT_TYPE_TOKEN;
@@ -877,20 +885,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 65 "trab2.lex"
+#line 70 "trab2.lex"
 {
 	//printf( "Um tipo valor booleano: %s\n", yytext);
-	inserirToken(&tabela, yytext, "valor-bool", num_lin, num_col);
+	addTabela(yytext, "valor-bool", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "valor-bool", num_lin, num_col);
     if(strcmp(yytext, "true") == 0) return TRUE_TOKEN;
     else if(strcmp(yytext, "false") == 0) return FALSE_TOKEN;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 71 "trab2.lex"
+#line 77 "trab2.lex"
 {
 	//printf( "Uma palavra-chave: %s\n", yytext);
-	inserirToken(&tabela, yytext, "keyword", num_lin, num_col);
+	addTabela(yytext, "keyword", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "keyword", num_lin, num_col);
     if(strcmp(yytext, "if") == 0) return IF_TOKEN;
     else if(strcmp(yytext, "else") == 0) return ELSE_TOKEN;
     else if(strcmp(yytext, "while") == 0) return WHILE_TOKEN;
@@ -900,30 +910,33 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 80 "trab2.lex"
+#line 87 "trab2.lex"
 {
 	//printf( "Um operador de soma: %s\n", yytext );
-	inserirToken(&tabela, yytext, "operador-soma", num_lin, num_col);
+	addTabela(yytext, "operador-soma", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "operador-soma", num_lin, num_col);
     if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
     else if(strcmp(yytext, "-") == 0) return SUB_TOKEN;
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 86 "trab2.lex"
+#line 94 "trab2.lex"
 {
 	//printf( "Um operador de multiplicação: %s\n", yytext );
-	inserirToken(&tabela, yytext, "operador-mult", num_lin, num_col);
+	addTabela(yytext, "operador-mult", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "operador-mult", num_lin, num_col);
     if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
     else if(strcmp(yytext, "/") == 0) return DIV_TOKEN;
 } 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 92 "trab2.lex"
+#line 101 "trab2.lex"
 {
 	//printf( "Um operador relacional: %s\n", yytext );
-	inserirToken(&tabela, yytext, "operador-rel", num_lin, num_col);
+	addTabela(yytext, "operador-rel", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "operador-rel", num_lin, num_col);
     if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
     else if(strcmp(yytext, ">") == 0) return BIGGER_TOKEN;
     else if(strcmp(yytext, "<=") == 0) return SMALLER_EQUAL_TOKEN;
@@ -935,49 +948,54 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 103 "trab2.lex"
+#line 113 "trab2.lex"
 {
 	//printf( "Um operador de atribuição: %s\n", yytext );
-	inserirToken(&tabela, yytext, "operador-atrib", num_lin, num_col);
+	addTabela(yytext, "operador-atrib", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "operador-atrib", num_lin, num_col);
     if(strcmp(yytext, "=") == 0) return EQUAL_TOKEN;
 
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 109 "trab2.lex"
+#line 120 "trab2.lex"
 {
 	//printf( "Um função para imprimir na tela: %s\n", yytext );
-	inserirToken(&tabela, yytext, "//printf", num_lin, num_col);
+	addTabela(yytext, "printf", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "//printf", num_lin, num_col);
     if(strcmp(yytext, "print") == 0) return PRINT_TOKEN;
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 114 "trab2.lex"
+#line 126 "trab2.lex"
 {
 	//printf( "Uma string: %s\n", yytext );
-	inserirToken(&tabela, yytext, "string", num_lin, num_col);
+	addTabela(yytext, "string", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "string", num_lin, num_col);
     return CHAR_TOKEN;
 
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 120 "trab2.lex"
+#line 133 "trab2.lex"
 {
 	//printf( "Um identificador: %s\n", yytext );
-	inserirToken(&tabela, yytext, "identificador", num_lin, num_col);
+	addTabela(yytext, "identificador", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "identificador", num_lin, num_col);
     return ID_TOKEN;
 
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 126 "trab2.lex"
+#line 140 "trab2.lex"
 {
 	//printf( "Um colchete: %s\n", yytext );
-	inserirToken(&tabela, yytext, "colchetes", num_lin, num_col);
+	addTabela(yytext, "colchetes", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "colchetes", num_lin, num_col);
 	if(strcmp(yytext, "[") == 0) return OPEN_BRACKET_TOKEN;
     else if(strcmp(yytext, "]") == 0) return CLOSE_BRACKET_TOKEN;
 
@@ -985,10 +1003,11 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 133 "trab2.lex"
+#line 148 "trab2.lex"
 {
 	//printf( "Um parenteses: %s\n", yytext );
-	inserirToken(&tabela, yytext, "parenteses", num_lin, num_col);
+	addTabela(yytext, "parenteses", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "parenteses", num_lin, num_col);
     if(strcmp(yytext, "(") == 0) return OPEN_PARENTHESES_TOKEN;
     else if(strcmp(yytext, ")") == 0) return CLOSE_PARENTHESES_TOKEN;
 
@@ -996,10 +1015,11 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 140 "trab2.lex"
+#line 156 "trab2.lex"
 {
 	//printf( "Uma chave: %s\n", yytext );
-	inserirToken(&tabela, yytext, "chaves", num_lin, num_col);
+	addTabela(yytext, "chaves", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "chaves", num_lin, num_col);
     if(strcmp(yytext, "{") == 0) return OPEN_KEYS_TOKEN;
     else if(strcmp(yytext, "}") == 0) return CLOSE_KEYS_TOKEN;
 
@@ -1007,35 +1027,38 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 147 "trab2.lex"
+#line 164 "trab2.lex"
 {
 	//printf( "Uma virgula: %s\n", yytext );
-	inserirToken(&tabela, yytext, "virgula", num_lin, num_col);
+	addTabela(yytext, "virgula", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "virgula", num_lin, num_col);
 	if(strcmp(yytext, ",") == 0) return COMMA_TOKEN;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 152 "trab2.lex"
+#line 170 "trab2.lex"
 {
 	//printf( "Um ponto e virgula delimitador: %s\n", yytext );
-	inserirToken(&tabela, yytext, "ponto-virgula", num_lin, num_col);
+	addTabela(yytext, "ponto-virgula", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "ponto-virgula", num_lin, num_col);
     if(strcmp(yytext, ";") == 0) return SEMICOLON_TOKEN;
 	
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 158 "trab2.lex"
+#line 177 "trab2.lex"
 {
 	//printf( "Um simbolo: %s\n", yytext );
-	inserirToken(&tabela, yytext, "simbolo", num_lin, num_col);
-	return SYMBOLS_TOKEN
+	addTabela(yytext, "simbolo", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "simbolo", num_lin, num_col);
+	return SYMBOLS_TOKEN;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 164 "trab2.lex"
+#line 184 "trab2.lex"
 {
 	num_col++;
 }
@@ -1043,7 +1066,7 @@ YY_RULE_SETUP
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 168 "trab2.lex"
+#line 188 "trab2.lex"
 {
 	num_lin++;
 	num_col = 0;
@@ -1051,19 +1074,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 175 "trab2.lex"
+#line 195 "trab2.lex"
 {
 	//printf( "Caracter não reconhecido: %s\n", yytext );
-	inserirToken(&tabela, yytext, "nao-reconhecido", num_lin, num_col);
+	addTabela(yytext, "nao-reconhecido", num_lin, num_col);
+	//inserirToken(&tabela, yytext, "nao-reconhecido", num_lin, num_col);
 	
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 181 "trab2.lex"
+#line 202 "trab2.lex"
 ECHO;
 	YY_BREAK
-#line 1067 "lex.yy.c"
+#line 1091 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2068,6 +2092,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 181 "trab2.lex"
+#line 202 "trab2.lex"
 
 

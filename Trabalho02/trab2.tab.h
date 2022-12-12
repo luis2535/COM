@@ -88,7 +88,8 @@ extern int yydebug;
     CLOSE_KEYS_TOKEN = 289,        /* CLOSE_KEYS_TOKEN  */
     COMMA_TOKEN = 290,             /* COMMA_TOKEN  */
     SEMICOLON_TOKEN = 291,         /* SEMICOLON_TOKEN  */
-    SYMBOLS_TOKEN = 292            /* SYMBOLS_TOKEN  */
+    SYMBOLS_TOKEN = 292,           /* SYMBOLS_TOKEN  */
+    PRINT_TOKEN = 293              /* PRINT_TOKEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -97,12 +98,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "trab2.y"
+#line 14 "trab2.y"
 
 	int ival;
 	float fval;
+	char cval;
+	char *sval;
 
-#line 106 "trab2.tab.h"
+#line 109 "trab2.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
