@@ -7,6 +7,8 @@ int count_label = 0;
 int localizacoesUsadas = 0;
 Token *tabela = NULL;
 FILE *f;
+typedef enum {INT_T, VOID_T} type_enum;
+int varaiblesNum = 1; 
 
 void TabelaToken(){
 Token *aux;
@@ -102,24 +104,15 @@ void generateHeader(){
 	fprintf(f, ".method public <init>()V\n");
 	fprintf(f, "	aload_0\n");
 	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
-	generateFooter();
-}
-
-void generateFooter(){
-	f = fopen("output.j", "a");
 	fprintf(f, "return\n");
 	fprintf(f, ".end method\n\n");
-}
-
-void generateMainHeader(){
-	f = fopen("output.j", "a");
 	fprintf(f, ".method public static main([Ljava/lang/String;)V\n");
 	fprintf(f, ".limit locals 100\n");
 	fprintf(f, ".limit stack 100\n");
-
 }
 
-void generateMainFooter(){
+
+void generateFooter(){
 	f = fopen("output.j", "a");
 	fprintf(f, "return\n");
 	fprintf(f, ".end method");
@@ -151,6 +144,21 @@ void putOpInStack(char op){
 void loadVariableValue(int localizacao){
 	f = fopen("output.j", "a");
 	fprintf(f, "iload %i\n", localizacao);
+}
+
+void defineVar(char *name, int type)
+{
+	f = fopen("output.j", "a");
+	{
+		if(type == INT_T)
+		{
+			fprintf(f, "iconst_0\nistore " + to_string(varaiblesNum));
+		}
+		else if ( type == VOID_T)
+		{
+			fprintf(f, "vconst_0\nvstore " + to_string(varaiblesNum));
+		}
+	}
 }
 
 void atributeVariable(char *id){
@@ -190,9 +198,15 @@ void ifStackInverse(char *op){
 	else if(strcmp(op, "<") == 0) fprintf(f, "ifge");
 	else if(strcmp(op, ">=") == 0) fprintf(f, "iflt");
 	else if(strcmp(op, ">") == 0) fprintf(f, "ifle");
+	else if(strcmp(op, "==") == 0) fprintf(f, "ifle");
 	else fprintf(f, "ifne");
 }
 void writeCode(char *code){
 	f = fopen("output.j", "a");
 	fprintf(f, "%s", code);
+}
+void instanciandoValor(int valor){
+	f = fopen("output.j", "a");
+	fprintf(f, "ldc "+to_string(valor));
+
 }

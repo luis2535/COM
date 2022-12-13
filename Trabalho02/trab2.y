@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Compiler.h"
-
+typedef enum {INT_T, VOID_T} type_enum;
 extern int count_label;
 
 void yyerror(const char* s);
@@ -38,33 +38,37 @@ void yyerror(const char* s);
 %token SYMBOLS_TOKEN
 %token PRINT_TOKEN
 
-%type<fval> FLOAT_TOKEN
-%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN IF_TOKEN ELSE_TOKEN WHILE_TOKEN
-%type<cval> soma mult ADD_TOKEN SUB_TOKEN MULT_TOKEN DIV_TOKEN
-%type<sval> var ID_TOKEN tipo-especificador INTEGER_TYPE_TOKEN VOID_TYPE_TOKEN BOOL_TYPE_TOKEN STRING_TYPE_TOKEN 
-%type<sval> relacional SMALLER_EQUAL_TOKEN SMALLER_TOKEN BIGGER_EQUAL_TOKEN BIGGER_TOKEN EQUAL_TOKEN COMPARE_TOKEN DIFF_TOKEN
 
+%type<ival> INT_TOKEN
+%type<sval> ID_TOKEN ADD_TOKEN SUB_TOKEN SMALLER_EQUAL_TOKEN MULT_TOKEN DIFF_TOKEN DIV_TOKEN SMALLER_TOKEN BIGGER_EQUAL_TOKEN BIGGER_TOKEN COMPARE_TOKEN EQUAL_TOKEN
 %start programa
 
 %%
 
-programa:	{generateHeader(); generateMainHeader();}	declaracao-lista {generateMainFooter();} // ADICIONAR GENERATE HEADER
+programa:	{generateHeader();}	declaracao-lista {generateFooter();} // ADICIONAR GENERATE HEADER
 	;
 
 declaracao-lista:	declaracao-lista declaracao
 	|		declaracao
 	;
 
-declaracao:		var-declaracao
+declaracao:		var-declaracao 
 	|		fun-declaracao
 	;
 
-var-declaracao:		tipo-especificador ID_TOKEN SEMICOLON_TOKEN
+var-declaracao:		tipo-especificador ID_TOKEN SEMICOLON_TOKEN{
+	string str($2);
+	if($1 == INT_T){
+		defineVar(str, INT_T);
+	}else if($1 == VOID_T){
+		defineVar(str, VOID_T);
+	}
+}
 	|		tipo-especificador ID_TOKEN OPEN_BRACKET_TOKEN INT_TOKEN CLOSE_BRACKET_TOKEN SEMICOLON_TOKEN
 	;
 
-tipo-especificador:	INTEGER_TYPE_TOKEN {$$ = strdup($1);}
-	|		VOID_TYPE_TOKEN {$$ = strdup($1);}
+tipo-especificador:	INTEGER_TYPE_TOKEN {$$ = INT_T;}
+	|		VOID_TYPE_TOKEN {$$ = VOID_T;}
 	;
 
 fun-declaracao:		tipo-especificador ID_TOKEN OPEN_PARENTHESES_TOKEN params CLOSE_PARENTHESES_TOKEN composto-decl
@@ -155,7 +159,7 @@ mult:			MULT_TOKEN {$$ = strdup($1);}
 fator:			OPEN_PARENTHESES_TOKEN expressao CLOSE_PARENTHESES_TOKEN
 	|		var {loadVariableValue(findLocalizacao($1));}
 	|		ativacao
-	|		INT_TOKEN
+	|		INT_TOKEN {instanciandoValor($1);}
 	;
 
 ativacao:		ID_TOKEN OPEN_PARENTHESES_TOKEN args CLOSE_PARENTHESES_TOKEN

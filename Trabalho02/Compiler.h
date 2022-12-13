@@ -22,9 +22,8 @@ typedef struct Token{
 void TabelaToken();
 void inserirToken(Token **tabela, char* conteudo, char* tipo, int linha, int coluna);
 void generateHeader();
-void generateMainHeader();
-void generateMainFooter();
 void generateFooter();
+void defineVar(string name, int type);
 void onlyLabel(int label);
 void onlyLabelForIf(int label);
 void onlyGoTo(int label);
@@ -38,3 +37,4 @@ void setLocalizacao(char *string, int local);
 void addTabela(char* conteudo, char* tipo, int linha, int coluna);
 Token *createTabela(char* conteudo, char* tipo, int linha, int coluna);
 Token *createToken(char* conteudo, char* tipo, int linha, int coluna);
+void instanciandoValor(int valor);

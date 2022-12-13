@@ -2095,3 +2095,7 @@ void yyfree (void * ptr )
 #line 202 "trab2.lex"
 
 
+int main(){
+	TabelaToken();
+}
+
